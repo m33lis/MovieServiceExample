@@ -43,6 +43,9 @@
                         ascending: PaginationUtil.parseAscending($stateParams.sort),
                         search: $stateParams.search
                     };
+                }],
+                allCategories: ['Category', function (Category) {
+                    return Category.query().$promise;
                 }]
             }
         })

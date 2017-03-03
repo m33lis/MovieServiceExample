@@ -29,6 +29,13 @@
                 </form>
             </div>
         </div>
+        <div class="row">
+            <div class="col-lg-1 no-padding-left">
+                <h2>Filter selection:</h2>
+                <button class="btn" ng-class="{'btn-primary': vm.isSelected(category)}" ng-repeat="category in vm.allCategories track by category.id" ng-click="vm.toggle(category)">{{category.name}}</button>
+                <button class="btn btn" ng-click="vm.clearMultiFilter()" style="float:right;">Clear filter</button>
+            </div>
+        </div>
     </div>
     <br/>
     <div class="table-responsive">
@@ -45,7 +52,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="movie in vm.movies track by movie.id">
+                <tr ng-repeat="movie in vm.movies | multi: vm.filteredCategories track by movie.id ">
                     <td><a ui-sref="movie-detail({id:movie.id})">{{movie.id}}</a></td>
                     <td>{{movie.title}}</td>
                     <td>{{movie.year}}</td>

@@ -5,9 +5,9 @@
         .module('movieServiceExampleApp')
         .controller('MovieController', MovieController);
 
-    MovieController.$inject = ['$state', 'Movie', 'MovieSearch', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams'];
+    MovieController.$inject = ['$state', 'Movie', 'MovieSearch', 'ParseLinks', 'AlertService', 'allCategories', 'paginationConstants', 'pagingParams'];
 
-    function MovieController($state, Movie, MovieSearch, ParseLinks, AlertService, paginationConstants, pagingParams) {
+    function MovieController($state, Movie, MovieSearch, ParseLinks, AlertService, allCategories, paginationConstants, pagingParams) {
 
         var vm = this;
 
@@ -19,8 +19,14 @@
         vm.clear = clear;
         vm.search = search;
         vm.loadAll = loadAll;
+        vm.toggle = toggle;
+        vm.clearMultiFilter = clearMultiFilter;
+        vm.isSelected = isSelected;
         vm.searchQuery = pagingParams.search;
         vm.currentSearch = pagingParams.search;
+        vm.allCategories = allCategories;
+        vm.filteredCategories = [];
+
 
         loadAll();
 
@@ -90,6 +96,25 @@
             vm.reverse = true;
             vm.currentSearch = null;
             vm.transition();
+        }
+
+        function toggle(category) {
+            if (isSelected(category) === false) {
+                vm.filteredCategories.push(category);
+            } else {
+                _.remove(vm.filteredCategories, {id: category.id});
+            }
+        }
+
+        function clearMultiFilter() {
+            vm.filteredCategories = [];
+        }
+
+        function isSelected(item) {
+            return !_.chain(vm.filteredCategories)
+                    .find({id: item.id})
+                    .isUndefined()
+                    .value();
         }
     }
 })();
